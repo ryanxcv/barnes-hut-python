@@ -13,8 +13,9 @@ from Quadtree import *
 res = 800
 
 # QTree region bounds
-b = Bounds(Vec2((0, 0)), 1)
-root = Empty(b)
+root = Empty(Bounds(Vec2((0, 0)), 1))
+
+bodies = []
 
 def keyhandler(*args):
     key = args[0]
@@ -25,7 +26,10 @@ def mousehandler(button, state, x, y):
     global root
     if state == GLUT_DOWN and button == GLUT_LEFT_BUTTON:
         pos = Vec2((x / res, y / res))
-        root = root.insert(Body(None, pos, None))
+        new_body = Body(None, pos, None)
+        root = root.insert(new_body)
+        bodies.append(new_body)
+        print(new_body)
         display()
 
 def initialize():
