@@ -53,6 +53,8 @@ class Node:
 class Empty(Node):
     def insert(self, body):
         return Leaf(self.bounds, body)
+    def traverse(self, f):
+        f(self)
 
 class Leaf(Node):
     def __init__(self, bounds, body):
@@ -86,3 +88,11 @@ class Branch(Node):
         f(self)
         for c in self.children:
             c.traverse(f)
+
+class QTree(Node):
+    def __init__(self, bounds):
+        self.root = Empty(bounds)
+    def insert(self, body):
+        self.root = self.root.insert(body)
+    def traverse(self, f):
+        self.root.traverse(f)

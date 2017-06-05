@@ -13,7 +13,8 @@ from Quadtree import *
 res = 800
 
 # QTree region bounds
-root = Empty(Bounds(Vec2((0, 0)), 1))
+bounds = Bounds(Vec2((0, 0)), 1)
+qtree = QTree(bounds)
 
 bodies = []
 
@@ -23,13 +24,11 @@ def keyhandler(*args):
         pass
 
 def mousehandler(button, state, x, y):
-    global root
     if state == GLUT_DOWN and button == GLUT_LEFT_BUTTON:
         pos = Vec2((x / res, y / res))
         new_body = Body(None, pos, None)
-        root = root.insert(new_body)
+        qtree.insert(new_body)
         bodies.append(new_body)
-        print(new_body)
         display()
 
 def initialize():
@@ -67,7 +66,7 @@ def display():
             glVertex2f(*n.body.position)
             glEnd()
 
-    root.traverse(drawNode)
+    qtree.traverse(drawNode)
 
     # Update the display
     glutSwapBuffers()
