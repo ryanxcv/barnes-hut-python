@@ -7,14 +7,16 @@ from matplotlib import pyplot
 import numpy
 import sys
 
-from Quadtree import *
+from Util import Bounds, Vec2, Body
+from Quadtree import Leaf
+from Simulator import BarnesHut
 
 # screen width/height
 res = 800
 
 # QTree region bounds
 bounds = Bounds(Vec2((0, 0)), 1)
-qtree = QTree(bounds)
+sim = BarnesHut(bounds)
 
 bodies = []
 
@@ -25,10 +27,9 @@ def keyhandler(*args):
 
 def mousehandler(button, state, x, y):
     if state == GLUT_DOWN and button == GLUT_LEFT_BUTTON:
-        pos = Vec2((x / res, y / res))
-        new_body = Body(None, pos, None)
-        qtree.insert(new_body)
-        bodies.append(new_body)
+        q = Vec2((x / res, y / res))
+        new_body = Body(1, q, None)
+        sim.insert(new_body)
         display()
 
 def initialize():
@@ -63,10 +64,10 @@ def display():
         if type(n) is Leaf:
             # draw the particle
             glBegin(GL_POINTS)
-            glVertex2f(*n.body.position)
+            glVertex2f(*n.body.q)
             glEnd()
 
-    qtree.traverse(drawNode)
+    sim.qtree.traverse(drawNode)
 
     # Update the display
     glutSwapBuffers()
