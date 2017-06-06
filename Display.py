@@ -5,6 +5,7 @@ from OpenGL.GLUT import *
 # from PIL import Image
 from matplotlib import pyplot
 import numpy
+from numpy import array
 import sys
 
 from Util import Bounds, Body
@@ -14,18 +15,20 @@ from Simulator import BarnesHut
 # screen width/height
 res = 800
 
-from numpy import array
-
-# QTree region bounds
 bounds = Bounds(array([0, 0]), 1)
 sim = BarnesHut(bounds)
-
 bodies = []
+
+render_quads = True
 
 def keyhandler(*args):
     key = args[0]
     if key == b's':
         sim.step()
+    elif key == b'q':
+        global render_quads
+        render_quads = not render_quads
+        display()
 
 def mousehandler(button, state, x, y):
     if state == GLUT_DOWN and button == GLUT_LEFT_BUTTON:
@@ -54,6 +57,13 @@ def display():
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
 
     def drawNode(n):
+        if type(n) is Leaf:
+            # draw the particle
+            glBegin(GL_POINTS)
+            glVertex2f(*n.body.q)
+            glEnd()
+
+    def drawQuad(n):
         # draw the boundary
         b = n.bounds
         glBegin(GL_LINE_LOOP)
@@ -63,13 +73,9 @@ def display():
         glVertex2f(b.nw[0] + b.s, b.nw[1])
         glEnd()
 
-        if type(n) is Leaf:
-            # draw the particle
-            glBegin(GL_POINTS)
-            glVertex2f(*n.body.q)
-            glEnd()
-
     sim.qtree.traverse(drawNode)
+    if render_quads:
+        sim.qtree.traverse(drawQuad)
 
     # Update the display
     glutSwapBuffers()
