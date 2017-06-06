@@ -7,28 +7,30 @@ from matplotlib import pyplot
 import numpy
 import sys
 
-from Util import Bounds, Vec2, Body
+from Util import Bounds, Body
 from Quadtree import Leaf
 from Simulator import BarnesHut
 
 # screen width/height
 res = 800
 
+from numpy import array
+
 # QTree region bounds
-bounds = Bounds(Vec2((0, 0)), 1)
+bounds = Bounds(array([0, 0]), 1)
 sim = BarnesHut(bounds)
 
 bodies = []
 
 def keyhandler(*args):
     key = args[0]
-    if key == b'i':
-        pass
+    if key == b's':
+        sim.step()
 
 def mousehandler(button, state, x, y):
     if state == GLUT_DOWN and button == GLUT_LEFT_BUTTON:
-        q = Vec2((x / res, y / res))
-        new_body = Body(1, q, None)
+        q = array([x / res, y / res])
+        new_body = Body(1, q, array((0, 0)))
         sim.insert(new_body)
         display()
 

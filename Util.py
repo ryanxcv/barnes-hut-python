@@ -1,15 +1,18 @@
-class Vec2(tuple):
-    def __add__(self, v):
-        return Vec2((self[0] + v[0], self[1] + v[1]))
+from math import sqrt
+from numpy import array
+
+def distance(p1, p2):
+    diff = p1 - p2
+    return sqrt(diff.dot(diff))
 
 class Body:
     '''
     Contains the properties of a single particle
     '''
-    def __init__(self, mass, q, v):
-        self.mass = mass
-        self.q = q
-        self.v = v
+    def __init__(self, m, q, v):
+        self.m = m # mass (scalar)
+        self.q = q # position
+        self.v = v # velocity
     def __repr__(self):
         return "Body: " + str(self.q)
 
@@ -30,5 +33,5 @@ s)
                q[1] >= self.nw[1] and q[1] < self.nw[1] + self.s
     def subdivide(self):
         s = self.s / 2
-        offsets = [Vec2((x, y)) for x in [0, s] for y in [0, s]]
+        offsets = [array((x, y)) for x in [0, s] for y in [0, s]]
         return [Bounds(self.nw + offset, s) for offset in offsets]
