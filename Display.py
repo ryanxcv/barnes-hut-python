@@ -41,7 +41,7 @@ def keyhandler(*args):
 
 def mousehandler(button, state, x, y):
     if state == GLUT_DOWN and button == GLUT_LEFT_BUTTON:
-        q = array([x / res, y / res])
+        q = array([2 * x / res - 1, 2 * y / res - 1])
         new_body = Body(1, q, array((0, 0)))
         sim.insert(new_body)
         display()
