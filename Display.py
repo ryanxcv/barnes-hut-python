@@ -1,13 +1,9 @@
 #!/bin/python3
 from OpenGL.GL   import *
-from OpenGL.GLU  import *
 from OpenGL.GLUT import *
-# from PIL import Image
-from matplotlib import pyplot
 from numpy import array
-import sys
 
-from Util import Bounds, Body
+from Util import Body
 from Quadtree import Leaf
 from Simulator import BarnesHut
 

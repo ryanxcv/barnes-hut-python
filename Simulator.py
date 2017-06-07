@@ -1,5 +1,4 @@
-from numpy import array
-import numpy
+from numpy import array, random
 from Quadtree import QTree
 from Util import Body, Bounds, randVec2d
 
@@ -22,7 +21,7 @@ class BarnesHut(Simulator):
         for i in range(initn):
             radius = 1
             maxv = 1
-            q = radius * numpy.random.rand() ** (1/2) * randVec2d()
+            q = radius * random.rand() ** (1/2) * randVec2d()
             v = maxv * randVec2d()
             self.insert(Body(1.0, q, v))
     def rebuild(self):
