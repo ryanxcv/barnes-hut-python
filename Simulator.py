@@ -1,6 +1,7 @@
 from numpy import array
+import numpy
 from Quadtree import QTree
-from Util import Body, Bounds
+from Util import Body, Bounds, randVec2d
 
 G = 1
 epsilon = 1e-10
@@ -12,11 +13,18 @@ class Simulator:
     def step(self):
         raise NotImplementedError
 
+defaultbounds = Bounds(array((-1, -1)), 2)
 class BarnesHut(Simulator):
-    def __init__(self, bounds):
-        self.bounds = bounds
+    def __init__(self, initbounds=defaultbounds, initn=0):
+        self.bounds = initbounds
         self.qtree = QTree(self.bounds)
         self.bodies = []
+        for i in range(initn):
+            radius = 1
+            maxv = 1
+            q = radius * numpy.random.rand() ** (1/2) * randVec2d()
+            v = maxv * randVec2d()
+            self.insert(Body(1.0, q, v))
     def rebuild(self):
         # calculate bounds
         min_x = min(body.q[0] for body in self.bodies)

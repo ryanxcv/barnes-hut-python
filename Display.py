@@ -4,7 +4,6 @@ from OpenGL.GLU  import *
 from OpenGL.GLUT import *
 # from PIL import Image
 from matplotlib import pyplot
-import numpy
 from numpy import array
 import sys
 
@@ -13,12 +12,10 @@ from Quadtree import Leaf
 from Simulator import BarnesHut
 
 # screen width/height
-res = 800
+res = 1000
 
 # simulator properties
-bounds = Bounds(array([0, 0]), 1)
-sim = BarnesHut(bounds)
-bodies = []
+sim = BarnesHut(initn=100)
 
 # toggles
 render_quads = True
@@ -30,6 +27,7 @@ def keyhandler(*args):
     # single step
     if key == b's' and not running:
         sim.step()
+        display()
     # toggle quad rendering
     elif key == b'q':
         global render_quads
@@ -62,7 +60,7 @@ def initialize():
     glViewport(0, 0, res, res)
     glMatrixMode(GL_PROJECTION)
     glLoadIdentity()
-    glOrtho(0, 1, 1, 0, 0, 1)
+    glOrtho(-1, 1, 1, -1, -1, 1)
 
 def display():
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)

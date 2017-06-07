@@ -1,9 +1,18 @@
 from math import sqrt
 from numpy import array
+import numpy
 
 def distance(p1, p2):
     diff = p1 - p2
     return sqrt(diff.dot(diff))
+
+def norm(v):
+    return numpy.sqrt(v.dot(v))
+
+def randVec2d():
+    radius = 1
+    x = numpy.random.uniform(-1, 1, 2)
+    return x / norm(x)
 
 class Body:
     '''
