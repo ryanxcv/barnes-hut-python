@@ -2,7 +2,7 @@ from numpy import array
 from Util import Bounds, distance
 
 # softening
-a = 0.5
+a = 0.1
 
 '''
 Parent class for all quadtree structures
