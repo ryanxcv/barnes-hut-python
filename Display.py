@@ -15,20 +15,31 @@ from Simulator import BarnesHut
 # screen width/height
 res = 800
 
+# simulator properties
 bounds = Bounds(array([0, 0]), 1)
 sim = BarnesHut(bounds)
 bodies = []
 
+# toggles
 render_quads = True
+running = False
 
 def keyhandler(*args):
     key = args[0]
-    if key == b's':
+    global running
+    # single step
+    if key == b's' and not running:
         sim.step()
+    # toggle quad rendering
     elif key == b'q':
         global render_quads
         render_quads = not render_quads
         display()
+    # play/pause toggle
+    elif key == b'p':
+        running = not running
+        if running:
+            display()
 
 def mousehandler(button, state, x, y):
     if state == GLUT_DOWN and button == GLUT_LEFT_BUTTON:
@@ -55,6 +66,8 @@ def initialize():
 
 def display():
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
+    if running:
+        sim.step()
 
     def drawNode(n):
         if type(n) is Leaf:
@@ -79,7 +92,8 @@ def display():
 
     # Update the display
     glutSwapBuffers()
-    glutPostRedisplay()
+    if running:
+        glutPostRedisplay()
 
 def main():
     initialize()
