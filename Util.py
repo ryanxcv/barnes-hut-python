@@ -8,7 +8,6 @@ def norm(v):
     return sqrt(v.dot(v))
 
 def randVec2d():
-    radius = 1
     x = random.uniform(-1, 1, 2)
     return x / norm(x)
 
